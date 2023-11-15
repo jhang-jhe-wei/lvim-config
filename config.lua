@@ -83,7 +83,7 @@ lvim.plugins = {
   },
   { "andrewradev/splitjoin.vim" },
   { 'AndrewRadev/sideways.vim' },
-  { 'preservim/tagbar' },
+  { 'liuchengxu/vista.vim' },
   {
     "kevinhwang91/nvim-bqf",
     event = { "BufRead", "BufNew" },
@@ -176,7 +176,7 @@ lvim.keys.normal_mode["<C-a>"] = "ggVG"
 lvim.builtin.terminal.open_mapping = "<C-`>"
 lvim.keys.normal_mode["<M-h>"] = ":SidewaysLeft<cr>"
 lvim.keys.normal_mode["<M-l>"] = ":SidewaysRight<cr>"
-lvim.keys.normal_mode["<leader>r"] = ":TagbarToggle<cr>"
+lvim.keys.normal_mode["<leader>r"] = ":Vista!!<cr>"
 
 -- Indent
 lvim.keys.normal_mode["<Tab>"] = ">>"
