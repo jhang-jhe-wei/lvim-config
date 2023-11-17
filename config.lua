@@ -4,6 +4,17 @@
 -- Discord: https://discord.com/invite/Xb9B4Ny
 lvim.plugins = {
   {
+    "jackMort/ChatGPT.nvim",
+    config = function()
+      require("chatgpt").setup()
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+  },
+  {
     "f-person/git-blame.nvim",
     event = "BufRead",
     config = function()
@@ -177,6 +188,24 @@ lvim.builtin.terminal.open_mapping = "<C-`>"
 lvim.keys.normal_mode["<M-h>"] = ":SidewaysLeft<cr>"
 lvim.keys.normal_mode["<M-l>"] = ":SidewaysRight<cr>"
 lvim.keys.normal_mode["<leader>r"] = ":Vista!!<cr>"
+
+lvim.keys.normal_mode['c'] = false
+lvim.builtin.which_key.mappings['c'] = {
+  name = "ChatGPT",
+  c = { "<cmd>ChatGPT<CR>", "ChatGPT" },
+  e = { "<cmd>ChatGPTEditWithInstruction<CR>", "Edit with instruction", mode = { "n", "v" } },
+  g = { "<cmd>ChatGPTRun grammar_correction<CR>", "Grammar Correction", mode = { "n", "v" } },
+  t = { "<cmd>ChatGPTRun translate<CR>", "Translate", mode = { "n", "v" } },
+  k = { "<cmd>ChatGPTRun keywords<CR>", "Keywords", mode = { "n", "v" } },
+  d = { "<cmd>ChatGPTRun docstring<CR>", "Docstring", mode = { "n", "v" } },
+  a = { "<cmd>ChatGPTRun add_tests<CR>", "Add Tests", mode = { "n", "v" } },
+  o = { "<cmd>ChatGPTRun optimize_code<CR>", "Optimize Code", mode = { "n", "v" } },
+  s = { "<cmd>ChatGPTRun summarize<CR>", "Summarize", mode = { "n", "v" } },
+  f = { "<cmd>ChatGPTRun fix_bugs<CR>", "Fix Bugs", mode = { "n", "v" } },
+  x = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code", mode = { "n", "v" } },
+  r = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", mode = { "n", "v" } },
+  l = { "<cmd>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", mode = { "n", "v" } },
+}
 
 -- Indent
 lvim.keys.normal_mode["<Tab>"] = ">>"
