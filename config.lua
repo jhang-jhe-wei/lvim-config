@@ -2,18 +2,26 @@
 -- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
 -- Forum: https://www.reddit.com/r/lunarvim/
 -- Discord: https://discord.com/invite/Xb9B4Ny
+-- return {
 lvim.plugins = {
   {
-    "jackMort/ChatGPT.nvim",
-    config = function()
-      require("chatgpt").setup()
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
+    "nvim-lua/plenary.nvim",
+    commit = 'f7adfc4b3f4f91aab6caebf42b3682945fbc35be'
   },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
+  { 'mracos/mermaid.vim' },
   {
     "f-person/git-blame.nvim",
     event = "BufRead",
@@ -25,11 +33,12 @@ lvim.plugins = {
   { "tpope/vim-surround" },
   {
     "iamcco/markdown-preview.nvim",
-    build = "cd app && npm install",
-    ft = "markdown",
-    config = function()
-      vim.g.mkdp_auto_start = 1
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && yarn install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
     end,
+    ft = { "markdown" },
   },
   {
     "ray-x/lsp_signature.nvim",
@@ -121,13 +130,7 @@ lvim.plugins = {
       })
     end,
   },
-  {
-    "ggandor/leap.nvim",
-    name = "leap",
-    config = function()
-      require("leap").add_default_mappings()
-    end,
-  },
+  { "ggandor/leap.nvim" },
   { "nvim-treesitter/nvim-treesitter-textobjects",
     config = function()
       require'nvim-treesitter.configs'.setup {
@@ -182,30 +185,15 @@ table.insert(lvim.plugins, {
   end,
 })
 
+-- disable default mapping
+lvim.keys.normal_mode['c'] = false
+
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<C-a>"] = "ggVG"
 lvim.builtin.terminal.open_mapping = "<C-`>"
 lvim.keys.normal_mode["<M-h>"] = ":SidewaysLeft<cr>"
 lvim.keys.normal_mode["<M-l>"] = ":SidewaysRight<cr>"
 lvim.keys.normal_mode["<leader>r"] = ":Vista!!<cr>"
-
-lvim.keys.normal_mode['c'] = false
-lvim.builtin.which_key.mappings['c'] = {
-  name = "ChatGPT",
-  c = { "<cmd>ChatGPT<CR>", "ChatGPT" },
-  e = { "<cmd>ChatGPTEditWithInstruction<CR>", "Edit with instruction", mode = { "n", "v" } },
-  g = { "<cmd>ChatGPTRun grammar_correction<CR>", "Grammar Correction", mode = { "n", "v" } },
-  t = { "<cmd>ChatGPTRun translate<CR>", "Translate", mode = { "n", "v" } },
-  k = { "<cmd>ChatGPTRun keywords<CR>", "Keywords", mode = { "n", "v" } },
-  d = { "<cmd>ChatGPTRun docstring<CR>", "Docstring", mode = { "n", "v" } },
-  a = { "<cmd>ChatGPTRun add_tests<CR>", "Add Tests", mode = { "n", "v" } },
-  o = { "<cmd>ChatGPTRun optimize_code<CR>", "Optimize Code", mode = { "n", "v" } },
-  s = { "<cmd>ChatGPTRun summarize<CR>", "Summarize", mode = { "n", "v" } },
-  f = { "<cmd>ChatGPTRun fix_bugs<CR>", "Fix Bugs", mode = { "n", "v" } },
-  x = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code", mode = { "n", "v" } },
-  r = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", mode = { "n", "v" } },
-  l = { "<cmd>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", mode = { "n", "v" } },
-}
 
 -- Indent
 lvim.keys.normal_mode["<Tab>"] = ">>"
@@ -235,5 +223,8 @@ local ripper_tags = function()
     end
   end
 end
-lvim.keys.normal_mode["\rt"] = ripper_tags
-lvim.keys.normal_mode["S"] = "<Plug>(leap-backward-to)"
+lvim.keys.normal_mode["<leader>rt"] = ripper_tags
+lvim.keys.normal_mode["<C-f>"] = "<Plug>(leap-forward-to)"
+lvim.keys.normal_mode["<C-b>"] = "<Plug>(leap-backward-to)"
+lvim.keys.normal_mode["<C-n>"] = ":tabnext<CR>"
+lvim.keys.normal_mode["<C-p>"] = ":tabprevious<CR>"
