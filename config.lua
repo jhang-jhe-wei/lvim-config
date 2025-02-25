@@ -5,21 +5,68 @@
 -- return {
 lvim.plugins = {
   {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-live-grep-args.nvim",
+        version = "^1.0.0",
+      },
+    },
+    config = function()
+      local telescope = require("telescope")
+      local lga_actions = require("telescope-live-grep-args.actions")
+
+      telescope.setup {
+        extensions = {
+          live_grep_args = {
+            auto_quoting = true, -- enable/disable auto-quoting
+            -- define mappings, e.g.
+            mappings = { -- extend mappings
+              i = {
+                ["<C-k>"] = lga_actions.quote_prompt(),
+                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                -- freeze the current list and start a fuzzy search in the frozen list
+                ["<C-space>"] = lga_actions.to_fuzzy_refine,
+              },
+            },
+            -- ... also accepts theme settings, for example:
+            -- theme = "dropdown", -- use dropdown theme
+            -- theme = { }, -- use own theme spec
+            -- layout_config = { mirror=true }, -- mirror preview pane
+          }
+        }
+      }
+
+      -- don't forget to load the extension
+      telescope.load_extension("live_grep_args")
+    end,
+  },
+  {
     "nvim-lua/plenary.nvim",
     commit = 'f7adfc4b3f4f91aab6caebf42b3682945fbc35be'
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
     dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+      { "zbirenbaum/copilot.lua" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
+    build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
-      debug = true, -- Enable debugging
-      -- See Configuration section for rest
+      -- See Configuration section for options
     },
     -- See Commands section for default commands if you want to lazy load on them
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function ()
+      require("copilot_cmp").setup()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end
   },
   { 'mracos/mermaid.vim' },
   {
@@ -39,6 +86,7 @@ lvim.plugins = {
       vim.g.mkdp_filetypes = { "markdown" }
     end,
     ft = { "markdown" },
+    commit = "2a22bb00acae88aa7b5d8b829acd2f63cb688d83"
   },
   {
     "ray-x/lsp_signature.nvim",
@@ -173,18 +221,6 @@ lvim.plugins = {
   }
 }
 
-table.insert(lvim.plugins, {
-  "zbirenbaum/copilot-cmp",
-  event = "InsertEnter",
-  dependencies = { "zbirenbaum/copilot.lua" },
-  config = function()
-    vim.defer_fn(function()
-      require("copilot").setup() -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
-      require("copilot_cmp").setup() -- https://github.com/zbirenbaum/copilot-cmp/blob/master/README.md#configuration
-    end, 100)
-  end,
-})
-
 -- disable default mapping
 lvim.keys.normal_mode['c'] = false
 
@@ -228,3 +264,7 @@ lvim.keys.normal_mode["<C-f>"] = "<Plug>(leap-forward-to)"
 lvim.keys.normal_mode["<C-b>"] = "<Plug>(leap-backward-to)"
 lvim.keys.normal_mode["<C-n>"] = ":tabnext<CR>"
 lvim.keys.normal_mode["<C-p>"] = ":tabprevious<CR>"
+lvim.builtin.which_key.mappings["s"] = {
+  name = "Search",
+  t = { "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", "Grep (Args)" },
+}
