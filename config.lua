@@ -264,7 +264,6 @@ lvim.keys.normal_mode["<C-f>"] = "<Plug>(leap-forward-to)"
 lvim.keys.normal_mode["<C-b>"] = "<Plug>(leap-backward-to)"
 lvim.keys.normal_mode["<C-n>"] = ":tabnext<CR>"
 lvim.keys.normal_mode["<C-p>"] = ":tabprevious<CR>"
-lvim.builtin.which_key.mappings["s"] = {
-  name = "Search",
-  t = { "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", "Grep (Args)" },
+lvim.builtin.which_key.mappings["st"] = {
+  "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", "Grep (Args)"
 }
