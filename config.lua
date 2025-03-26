@@ -5,6 +5,10 @@
 -- return {
 lvim.plugins = {
   {
+    "leoluz/nvim-dap-go",
+    require('dap-go').setup()
+  },
+  {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -54,7 +58,7 @@ lvim.plugins = {
     },
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
-      -- See Configuration section for options
+      model = "gpt-4o-2024-11-20"
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
