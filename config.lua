@@ -271,3 +271,6 @@ lvim.keys.normal_mode["<C-p>"] = ":tabprevious<CR>"
 lvim.builtin.which_key.mappings["st"] = {
   "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", "Grep (Args)"
 }
+lvim.builtin.which_key.setup.plugins.presets.z = true
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
