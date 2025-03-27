@@ -6,7 +6,6 @@
 lvim.plugins = {
   {
     "leoluz/nvim-dap-go",
-    require('dap-go').setup()
   },
   {
     "nvim-telescope/telescope.nvim",
@@ -45,10 +44,6 @@ lvim.plugins = {
       -- don't forget to load the extension
       telescope.load_extension("live_grep_args")
     end,
-  },
-  {
-    "nvim-lua/plenary.nvim",
-    commit = 'f7adfc4b3f4f91aab6caebf42b3682945fbc35be'
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
@@ -272,5 +267,4 @@ lvim.builtin.which_key.mappings["st"] = {
   "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", "Grep (Args)"
 }
 lvim.builtin.which_key.setup.plugins.presets.z = true
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+require('dap-go').setup()
