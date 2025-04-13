@@ -53,7 +53,6 @@ lvim.plugins = {
     },
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
-      model = "gpt-4o-2024-11-20"
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
@@ -268,3 +267,13 @@ lvim.builtin.which_key.mappings.s.t = {
 }
 
 require('dap-go').setup()
+local lspconfig = require("lspconfig")
+
+lspconfig.gopls.setup({
+  settings = {
+    gopls = {
+      buildFlags = { "-tags=wireinject" },
+    },
+  },
+})
+
